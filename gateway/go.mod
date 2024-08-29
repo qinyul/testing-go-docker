@@ -1,4 +1,4 @@
-module github.com/qinyul/test-go-docker/gateway
+module github.com/qinyul/testing-go-docker/gateway
 
 go 1.22.3
 
