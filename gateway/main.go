@@ -3,9 +3,12 @@ package main
 import (
 	"log"
 
-	"github.com/gofiber/fiber/v2"
+	fiber "github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/joho/godotenv"
-	"github.com/qinyul/testing-go-docker/gateway/handler"
+	"github.com/qinyul/testing-go-docker/handler"
+	"github.com/qinyul/testing-go-docker/router"
 )
 
 func main() {
@@ -17,4 +20,21 @@ func main() {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: handler.ErrorHandler(),
 	})
+
+	app.Use(func(c *fiber.Ctx) error {
+		if len(c.Accepts("application/json")) == 0 {
+			return c.Status(500).JSON(fiber.Map{
+				"message": "Invalid Accept",
+			})
+		}
+
+		return c.Next()
+	})
+
+	app.Use(recover.New())
+	app.Use(cors.New())
+
+	router.AuthRouter(app)
+
+	log.Fatal(app.Listen(":5000"))
 }

@@ -1,0 +1,9 @@
+services:
+  app:
+    image: app
+    build: .
+    volumes:
+      - ./:/build
+    restart: on-failure
+    ports:
+      - "${APP_PORT}:3000"
