@@ -9,6 +9,8 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    networks:
+      - mynetwork
     volumes:
       - ./docker/rabbitmq_data:/data
 
@@ -26,3 +28,7 @@ services:
 
 volumes:
   pgdata:
+
+networks:
+  mynetwork:
+    driver: bridge
